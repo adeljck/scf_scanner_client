@@ -9,4 +9,5 @@ type Scanner struct {
 	c          map[string]string
 	filePath   string
 	Results    string
+	targets    []string
 }
