@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"gopkg.in/yaml.v3"
-	"io"
 	"log"
 	"net"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -70,17 +70,17 @@ func (S *Scanner) Run() {
 	}
 }
 func (S *Scanner) loadTargetsFile() {
-	file, err := os.OpenFile(S.filePath, os.O_RDONLY, 0777)
+	file, err := os.OpenFile(S.filePath, os.O_RDONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	reader := bufio.NewReader(file)
-	for {
-		line, _, err := reader.ReadLine()
-		if err == io.EOF {
-			break
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		ip := strings.TrimSpace(scanner.Text())
+		if len(ip) == 0 {
+			continue
 		}
-		S.targets = append(S.targets, string(line))
+		S.targets = append(S.targets, ip)
 	}
 }
