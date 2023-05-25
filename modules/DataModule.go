@@ -10,4 +10,5 @@ type Scanner struct {
 	filePath   string
 	Results    string
 	targets    []string
+	outPutPath string
 }
