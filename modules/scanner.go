@@ -66,7 +66,6 @@ func (S *Scanner) scan() {
 	client.SetTimeout(900 * time.Second)
 	client.SetQueryParams(Scanarams)
 	client.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
-	client.SetProxy("http://127.0.0.1:8080")
 	var resp *resty.Response
 	var err error
 	switch S.scanModule {
