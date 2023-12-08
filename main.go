@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	modules.S.Run()
+	S := new(modules.Scanner)
+	S.Run()
 }

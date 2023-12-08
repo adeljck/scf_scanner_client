@@ -1,14 +1,14 @@
 package modules
 
 type Scanner struct {
-	ip         string
-	ports      string
-	scanModule string
+	scanModule int
 	execParam  string
 	check      bool
 	c          map[string]string
-	filePath   string
-	Results    string
-	targets    []string
+	results    string
 	outPutPath string
+}
+type params struct {
+	Type int    `json:"type"`
+	Args string `json:"args"`
 }
