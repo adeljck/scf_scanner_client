@@ -12,11 +12,6 @@ import (
 	"time"
 )
 
-var (
-	O *os.File
-	W *bufio.Writer
-)
-
 func (S *Scanner) init() {
 	S.loadConfig()
 	flag.IntVar(&S.scanModule, "t", 1, "use tool 1 is fscan,2 is kscan,3 is dirscan,deault is 1")
@@ -30,8 +25,6 @@ func (S *Scanner) init() {
 				log.SetPrefix("[-] ")
 				log.Fatalln("output file already exists.")
 			}
-			O, _ = os.OpenFile(S.outPutPath, os.O_WRONLY|os.O_CREATE, 0766)
-			W = bufio.NewWriter(O)
 		}
 		if S.execParam == "" {
 			log.SetPrefix("[-] ")
@@ -96,11 +89,11 @@ func (S *Scanner) Run() {
 	fmt.Println(S.results)
 	if !S.check {
 		S.outPutToFile()
-		W.Flush()
-		O.Close()
 	}
 }
 func (S *Scanner) outPutToFile() {
+	O, _ := os.OpenFile(S.outPutPath, os.O_WRONLY|os.O_CREATE, 0766)
+	W := bufio.NewWriter(O)
 	if S.outPutPath != "" {
 		_, err := W.WriteString(S.results + "\n")
 		if err != nil {
@@ -108,6 +101,8 @@ func (S *Scanner) outPutToFile() {
 			log.Fatal(err)
 		}
 	}
+	W.Flush()
+	O.Close()
 }
 func (S *Scanner) isFileExists() bool {
 	_, err := os.Lstat(S.outPutPath)
